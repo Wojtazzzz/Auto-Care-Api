@@ -1,0 +1,24 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthUserVerification {
+  authorized: Boolean!
+}
+
+type Car {
+  id: Int!
+}
+
+input GetCarDetailsRequest {
+  carId: Int!
+}
+
+type GetCarDetailsResponse {
+  car: Car!
+}
+
+type Query {
+  getCarDetails(params: GetCarDetailsRequest!): GetCarDetailsResponse!
+  verify: AuthUserVerification!
+}
