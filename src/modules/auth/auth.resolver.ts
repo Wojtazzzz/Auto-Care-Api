@@ -4,10 +4,13 @@ import { Prisma } from '@prisma/client';
 import { AuthUserVerification } from './auth.model';
 import { User } from './auth.decorator';
 import { UserAuthDTO } from './auth.dto';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from './guards/auth-jwt.guard';
 
 @Resolver()
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
+
   @UseGuards(JwtAuthGuard)
   @Query(() => AuthUserVerification)
   async verify(
