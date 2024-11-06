@@ -7,12 +7,46 @@ export class CarsRepository {
     private prisma: PrismaService,
   ) {}
 
-  async getDetails({ userSub, carId }) {
-    return this.prisma.car.findFirst({
+  async getUserCars({ userSub, limit }: { userSub: string; limit?: number }) {
+    return this.prisma.car.findMany({
       where: {
-        id: carId,
         User: {
           sub: userSub,
+        },
+      },
+      take: limit,
+      orderBy: [
+        {
+          weight: 'asc',
+        },
+        {
+          createdAt: 'desc',
+        },
+      ],
+      select: {
+        id: true,
+        name: true,
+        vin: true,
+        weight: true,
+        Insurance: {
+          orderBy: {
+            expiredAt: 'desc',
+          },
+          take: 1,
+          select: {
+            id: true,
+            expiredAt: true,
+          },
+        },
+        PeriodicService: {
+          orderBy: {
+            expiredAt: 'desc',
+          },
+          take: 1,
+          select: {
+            id: true,
+            expiredAt: true,
+          },
         },
       },
     });

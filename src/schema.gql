@@ -7,18 +7,33 @@ type AuthUserVerification {
 }
 
 type Car {
+  Insurance: [Insurance!]!
+  PeriodicService: [PeriodicService!]!
+  id: Int!
+  name: String!
+  vin: String!
+  weight: Int!
+}
+
+input GetUserCarsRequest {
+  limit: Int
+}
+
+type GetUserCarsResponse {
+  cars: [Car!]!
+}
+
+type Insurance {
+  expiredAt: String!
   id: Int!
 }
 
-input GetCarDetailsRequest {
-  carId: Int!
-}
-
-type GetCarDetailsResponse {
-  car: Car!
+type PeriodicService {
+  expiredAt: String!
+  id: Int!
 }
 
 type Query {
-  getCarDetails(params: GetCarDetailsRequest!): GetCarDetailsResponse!
+  getUserCars(params: GetUserCarsRequest!): GetUserCarsResponse!
   verify: AuthUserVerification!
 }
