@@ -15,6 +15,15 @@ type Car {
   weight: Int!
 }
 
+input GetCarServicesRequest {
+  carId: Int
+  limit: Int
+}
+
+type GetCarServicesResponse {
+  services: [Service!]!
+}
+
 input GetUserCarsRequest {
   limit: Int
 }
@@ -34,6 +43,13 @@ type PeriodicService {
 }
 
 type Query {
+  getCarServices(params: GetCarServicesRequest!): GetCarServicesResponse!
   getUserCars(params: GetUserCarsRequest!): GetUserCarsResponse!
   verify: AuthUserVerification!
+}
+
+type Service {
+  createdAt: String!
+  id: Int!
+  name: String!
 }

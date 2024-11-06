@@ -1,5 +1,5 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { CarsRepository } from '../cars.repository';
+import { CarsRepository } from '../repositories/cars.repository';
 
 export class GetUserCarsQuery {
   constructor(

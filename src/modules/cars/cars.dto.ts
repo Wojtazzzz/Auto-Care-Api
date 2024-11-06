@@ -55,3 +55,35 @@ export class GetUserCarsResponse {
   @Field(() => [Car])
   cars: Car[];
 }
+
+@ObjectType()
+export class Service {
+  @Field(() => Int)
+  id: number;
+
+  @Field(() => String)
+  name: string;
+
+  @Field(() => String)
+  createdAt: string;
+}
+
+@ArgsType()
+@InputType()
+export class GetCarServicesRequest {
+  @Field(() => Int, { nullable: true })
+  carId?: number;
+
+  @Field(() => Int, { nullable: true })
+  limit?: number;
+}
+
+@ObjectType()
+export class GetCarServicesResponse {
+  constructor(services: Service[]) {
+    this.services = services;
+  }
+
+  @Field(() => [Service])
+  services: Service[];
+}

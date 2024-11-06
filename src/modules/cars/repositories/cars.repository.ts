@@ -1,4 +1,4 @@
-import { PrismaService } from '../../shared/prisma.service';
+import { PrismaService } from '../../../shared/prisma.service';
 import { forwardRef, Inject } from '@nestjs/common';
 
 export class CarsRepository {
