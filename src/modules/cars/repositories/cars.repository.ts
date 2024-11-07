@@ -51,4 +51,40 @@ export class CarsRepository {
       },
     });
   }
+
+  async create({
+    name,
+    vin,
+    userSub,
+  }: {
+    name: string;
+    vin: string;
+    userSub: string;
+  }) {
+    const {
+      _max: { weight: lastWeight },
+    } = await this.prisma.car.aggregate({
+      _max: { weight: true },
+      where: {
+        User: {
+          sub: userSub,
+        },
+      },
+    });
+
+    return this.prisma.user.update({
+      where: {
+        sub: userSub,
+      },
+      data: {
+        cars: {
+          create: {
+            name,
+            vin,
+            weight: lastWeight !== null ? lastWeight + 1 : 0,
+          },
+        },
+      },
+    });
+  }
 }

@@ -8,6 +8,7 @@ import { PrismaService } from '../../shared/prisma.service';
 import { GetUserCarsHandler } from './queries/get-user-cars.handler';
 import { GetCarServicesHandler } from './queries/get-car-services.handler';
 import { ServicesRepository } from './repositories/services.repository';
+import { CreateCarHandler } from './commands/create-car.handler';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ServicesRepository } from './repositories/services.repository';
     ServicesRepository,
     GetUserCarsHandler,
     GetCarServicesHandler,
+    CreateCarHandler,
   ],
 })
 export class CarsModule {}

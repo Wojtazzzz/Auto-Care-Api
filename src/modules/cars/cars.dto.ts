@@ -1,4 +1,5 @@
 import { ArgsType, Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { IsString, Length, MinLength } from 'class-validator';
 
 @ArgsType()
 @InputType()
@@ -86,4 +87,27 @@ export class GetCarServicesResponse {
 
   @Field(() => [Service])
   services: Service[];
+}
+
+@ArgsType()
+@InputType()
+export class CreateCarRequest {
+  @Field(() => String)
+  @IsString()
+  @MinLength(3)
+  name: string;
+
+  @Field(() => String)
+  @Length(17, 17)
+  vin: string;
+}
+
+@ObjectType()
+export class CreateCarResponse {
+  constructor() {
+    this.created = true;
+  }
+
+  @Field(() => Boolean)
+  created: boolean;
 }

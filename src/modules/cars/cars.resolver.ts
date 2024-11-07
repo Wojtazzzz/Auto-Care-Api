@@ -1,10 +1,12 @@
-import { Resolver, Query, Args } from '@nestjs/graphql';
-import { QueryBus } from '@nestjs/cqrs';
+import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   GetUserCarsResponse,
   GetUserCarsRequest,
   GetCarServicesRequest,
   GetCarServicesResponse,
+  CreateCarResponse,
+  CreateCarRequest,
 } from './cars.dto';
 import { User } from '../auth/auth.decorator';
 import { UserDto } from '../auth/auth.dto';
@@ -12,10 +14,14 @@ import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/guards/auth-jwt.guard';
 import { GetUserCarsQuery } from './queries/get-user-cars.handler';
 import { GetCarServicesQuery } from './queries/get-car-services.handler';
+import { CreateCarCommand } from './commands/create-car.handler';
 
 @Resolver()
 export class CarsResolver {
-  constructor(private readonly queryBus: QueryBus) {}
+  constructor(
+    private readonly queryBus: QueryBus,
+    private readonly commandBus: CommandBus,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Query(() => GetUserCarsResponse)
@@ -43,5 +49,19 @@ export class CarsResolver {
     const result = await this.queryBus.execute(query);
 
     return new GetCarServicesResponse(result);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Mutation(() => CreateCarResponse)
+  async createCar(
+    @Args('params', { type: () => CreateCarRequest })
+    params: CreateCarRequest,
+    @User() user: UserDto,
+  ) {
+    const query = new CreateCarCommand(params.name, params.vin, user.sub);
+
+    await this.commandBus.execute(query);
+
+    return new CreateCarResponse();
   }
 }

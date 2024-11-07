@@ -15,6 +15,15 @@ type Car {
   weight: Int!
 }
 
+input CreateCarRequest {
+  name: String!
+  vin: String!
+}
+
+type CreateCarResponse {
+  created: Boolean!
+}
+
 input GetCarServicesRequest {
   carId: Int
   limit: Int
@@ -38,6 +47,7 @@ type Insurance {
 }
 
 type Mutation {
+  createCar(params: CreateCarRequest!): CreateCarResponse!
   verify: AuthUserVerification!
 }
 
