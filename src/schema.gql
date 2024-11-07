@@ -37,6 +37,10 @@ type Insurance {
   id: Int!
 }
 
+type Mutation {
+  verify: AuthUserVerification!
+}
+
 type PeriodicService {
   expiredAt: String!
   id: Int!
@@ -45,7 +49,6 @@ type PeriodicService {
 type Query {
   getCarServices(params: GetCarServicesRequest!): GetCarServicesResponse!
   getUserCars(params: GetUserCarsRequest!): GetUserCarsResponse!
-  verify: AuthUserVerification!
 }
 
 type Service {

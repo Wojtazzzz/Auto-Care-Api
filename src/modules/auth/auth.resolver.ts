@@ -1,4 +1,4 @@
-import { Context, Query, Resolver } from '@nestjs/graphql';
+import { Context, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Prisma } from '@prisma/client';
 import { AuthUserVerification } from './auth.model';
@@ -12,22 +12,24 @@ export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Query(() => AuthUserVerification)
+  @Mutation(() => AuthUserVerification)
   async verify(
     @User() user: UserAuthDTO,
     @Context() ctx: { req: { headers?: { authorization: string } } },
   ) {
     try {
       const authorizationHeader = ctx.req.headers?.authorization;
+
       if (!authorizationHeader) {
         return {
           authorized: false,
         };
       }
-      const userInfo =
+
+      const { sub, email, nickname } =
         await this.authService.getUserInfoFromAuth0(authorizationHeader);
 
-      // @TODO: create user record in DB
+      await this.authService.createOrIgnore(sub, email, nickname);
 
       return {
         authorized: true,

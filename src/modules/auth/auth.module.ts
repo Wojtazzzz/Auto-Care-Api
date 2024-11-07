@@ -6,6 +6,7 @@ import { HttpModule } from '@nestjs/axios';
 import { AuthResolver } from './auth.resolver';
 import { PrismaService } from '../../shared/prisma.service';
 import { AuthService } from './auth.service';
+import { AuthRepository } from './auth.repository';
 
 @Module({
   imports: [
@@ -17,7 +18,13 @@ import { AuthService } from './auth.service';
       inject: [ConfigService],
     }),
   ],
-  providers: [OAuthJwtStrategy, AuthResolver, PrismaService, AuthService],
+  providers: [
+    OAuthJwtStrategy,
+    AuthResolver,
+    PrismaService,
+    AuthService,
+    AuthRepository,
+  ],
   exports: [PassportModule],
 })
 export class AuthModule {}
